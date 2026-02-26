@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Users\Schemas;
 
+use Filament\Schemas\Components\Utilities\Set;
 use App\Models\State;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\TextInput;
@@ -10,8 +11,7 @@ use Filament\Forms\FormsComponent;
 use Illuminate\Support\Collection;
 use Filament\Schemas\Schema;
 use Filament\Schemas\Components\Section;
-
-
+use Symfony\Component\Console\Input\Input;
 class UserForm
 {
     public static function configure(Schema $schema): Schema
@@ -44,6 +44,9 @@ class UserForm
                     ->searchable()
                     ->preload()
                     ->live()
+                    ->afterStateUpdated(function(Set $set) { $set('state_id', null);
+                    $set('city_id', null);
+                    })
                     ->required(),
                     Select::make('state_id')
                     ->options(fn(callable $get)=> 
@@ -51,6 +54,8 @@ class UserForm
                     ->pluck('name', 'id'))
                     ->searchable()
                     ->preload()
+                    ->live()
+                    ->afterStateUpdated(function(Set $set) { $set('city_id', null); })
                     ->required(),    
                     Select::make('city_id')
                     ->options(fn(callable $get)=> 
@@ -59,9 +64,15 @@ class UserForm
                     ->searchable()
                     ->preload()
                     ->live()
-                    ->required()
-                ])
+                    ->required(),
 
+                    TextInput::make('address')
+                    ->required(),
+                    TextInput::make('postal_code')
+                    ->required(),
+                ])
+                ->columns(3)
+                ->columnSpanFull(),
             ]);
     }
 }
