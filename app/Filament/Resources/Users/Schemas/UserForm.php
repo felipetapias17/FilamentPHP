@@ -14,11 +14,13 @@ use Filament\Schemas\Components\Section;
 use Symfony\Component\Console\Input\Input;
 class UserForm
 {
+    # Configura el esquema del formulario para la entidad User, definiendo las secciones y campos necesarios para la creación y edición de usuarios en el panel de administración de Filament
     public static function configure(Schema $schema): Schema
     {
         return $schema
             ->components([
 
+            # Sección para la información personal del usuario, con campos para nombre, correo electrónico, fecha de verificación y contraseña
             Section::make('Personal Info')
             ->inlineLabel()
             ->schema([
@@ -36,6 +38,8 @@ class UserForm
                 ->columns(2)
                 ->columnSpanFull(),
 
+
+                # Sección para la información de dirección, con campos dependientes para país, estado y ciudad 
                 Section::make('Address Info')
                 ->inlineLabel()
                 ->schema([
@@ -48,6 +52,8 @@ class UserForm
                     $set('city_id', null);
                     })
                     ->required(),
+
+                    #Campo de selección para el estado, con opciones dependientes del país seleccionado
                     Select::make('state_id')
                     ->options(fn(callable $get)=> 
                     \App\Models\State::where('country_id', $get('country_id'))
@@ -56,7 +62,9 @@ class UserForm
                     ->preload()
                     ->live()
                     ->afterStateUpdated(function(Set $set) { $set('city_id', null); })
-                    ->required(),    
+                    ->required(),
+
+                    #Campo de selección para la ciudad, con opciones dependientes del estado seleccionado    
                     Select::make('city_id')
                     ->options(fn(callable $get)=> 
                     \App\Models\City::where('state_id', $get('state_id'))
@@ -66,13 +74,13 @@ class UserForm
                     ->live()
                     ->required(),
 
-                    TextInput::make('address')
+                    TextInput::make('address') #Campo de texto para la dirección
                     ->required(),
-                    TextInput::make('postal_code')
+                    TextInput::make('postal_code') #Campo de texto para el código postal
                     ->required(),
                 ])
-                ->columns(3)
-                ->columnSpanFull(),
+                ->columns(3) #Organiza los campos en 3 columnas
+                ->columnSpanFull(), #Hace que la sección ocupe todo el ancho del formulario
             ]);
     }
 }
