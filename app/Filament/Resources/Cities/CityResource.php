@@ -8,6 +8,7 @@ use App\Filament\Resources\Cities\Pages\ListCities;
 use App\Filament\Resources\Cities\Schemas\CityForm;
 use App\Filament\Resources\Cities\Tables\CitiesTable;
 use App\Models\City;
+use UnitEnum;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -21,8 +22,10 @@ class CityResource extends Resource
 {
     protected static ?string $model = City::class;
 
+    #Configura el grupo de navegación para el recurso de ciudades, asignándolo al grupo "System Management" en el panel de administración de Filament
+    protected static UnitEnum|string|null $navigationGroup = 'System Management';
+    protected static ?int $navigationSort = 5;
     protected static string|BackedEnum|null $navigationIcon = "heroicon-o-building-office";
-
     protected static ?string $recordTitleAttribute = 'name';
 
     public static function form(Schema $schema): Schema
