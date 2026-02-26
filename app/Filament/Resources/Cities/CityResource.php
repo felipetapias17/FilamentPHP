@@ -16,11 +16,12 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
+# Define el recurso de Filament para la entidad City, configurando el modelo asociado, el icono de navegación, el título del registro y las páginas disponibles para listar, crear y editar ciudades en el panel de administración de Filament
 class CityResource extends Resource
 {
     protected static ?string $model = City::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = "heroicon-o-building-office";
 
     protected static ?string $recordTitleAttribute = 'name';
 

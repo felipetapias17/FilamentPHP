@@ -30,9 +30,10 @@ class UserForm
                     ->label('Email address')
                     ->email()
                     ->required(),
-                DateTimePicker::make('email_verified_at'),
+                DateTimePicker::make('email_verified_at')->hiddenOn('edit'),
                 TextInput::make('password')
                     ->password()
+                    ->hiddenOn('edit') #Oculta el campo de contraseña al editar un usuario existente
                     ->required(),
                 ])
                 ->columns(2)
